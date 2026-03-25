@@ -13,5 +13,5 @@ public class Player : AuditBase
     public int TeamId { get; set; }
 
     // Navigation Property
-    public Team Team { get; set; } = null!; //Simbolo de nuleabilidad
+    public Teams Team { get; set; } = null!; //Simbolo de nuleabilidad
 }

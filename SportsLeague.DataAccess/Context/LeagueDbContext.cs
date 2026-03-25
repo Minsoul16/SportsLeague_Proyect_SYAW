@@ -10,7 +10,7 @@ public class LeagueDbContext : DbContext
     {
     }
 
-    public DbSet<Team> Teams => Set<Team>();
+    public DbSet<Teams> Teams => Set<Teams>();
     public DbSet<Player> Players => Set<Player>();
     public DbSet<Referee> Referees => Set<Referee>();
     public DbSet<Tournament> Tournaments => Set<Tournament>();
@@ -20,7 +20,7 @@ public class LeagueDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // ── Team Configuration ──
-        modelBuilder.Entity<Team>(entity =>
+        modelBuilder.Entity<Teams>(entity =>
         {
             entity.HasKey(t => t.Id);
             entity.Property(t => t.Name)

@@ -2,12 +2,12 @@
 
 namespace SportsLeague.Domain.Interfaces.Repositories
 {
-    public interface ITeamRepository : IGenericRepository<Team>
+    public interface ITeamRepository : IGenericRepository<Teams>
     {
 
-        Task<Team?> GetByNameAsync(string name);
+        Task<Teams?> GetByNameAsync(string name);
 
-        Task<IEnumerable<Team>> GetByCityAsync(string city);
+        Task<IEnumerable<Teams>> GetByCityAsync(string city);
 
     }
 }

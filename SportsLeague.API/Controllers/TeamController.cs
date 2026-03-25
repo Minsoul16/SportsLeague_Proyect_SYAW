@@ -47,7 +47,7 @@ public class TeamController : ControllerBase
     {
         try
         {
-            var team = _mapper.Map<Team>(dto);
+            var team = _mapper.Map<Teams>(dto);
             var createdTeam = await _teamService.CreateAsync(team);
             var responseDto = _mapper.Map<TeamResponseDTO>(createdTeam);
 
@@ -68,7 +68,7 @@ responseDto);
     {
         try
         {
-            var team = _mapper.Map<Team>(dto);
+            var team = _mapper.Map<Teams>(dto);
             await _teamService.UpdateAsync(id, team);
             return NoContent();
         }

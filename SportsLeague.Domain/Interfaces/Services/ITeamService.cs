@@ -8,13 +8,13 @@ namespace SportsLeague.Domain.Interfaces.Services
     public interface ITeamService
     {
 
-        Task<IEnumerable<Team>> GetAllAsync();
+        Task<IEnumerable<Teams>> GetAllAsync();
 
-        Task<Team?> GetByIdAsync(int id);
+        Task<Teams?> GetByIdAsync(int id);
 
-        Task<Team> CreateAsync(Team team);
+        Task<Teams> CreateAsync(Teams team);
 
-        Task UpdateAsync(int id, Team team);
+        Task UpdateAsync(int id, Teams team);
 
         Task DeleteAsync(int id);
 

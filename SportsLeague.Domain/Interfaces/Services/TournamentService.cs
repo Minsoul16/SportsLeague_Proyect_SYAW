@@ -167,7 +167,7 @@ public class TournamentService : ITournamentService
         await _tournamentTeamRepository.CreateAsync(tournamentTeam);
     }
 
-    public async Task<IEnumerable<Team>> GetTeamsByTournamentAsync(int tournamentId)
+    public async Task<IEnumerable<Teams>> GetTeamsByTournamentAsync(int tournamentId)
     {
         var tournament = await _tournamentRepository.GetByIdAsync(tournamentId);
         if (tournament == null)

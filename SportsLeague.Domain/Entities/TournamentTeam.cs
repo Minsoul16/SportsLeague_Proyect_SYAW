@@ -8,5 +8,5 @@ public class TournamentTeam : AuditBase
 
     // Navigation Properties
     public Tournament Tournament { get; set; } = null!;
-    public Team Team { get; set; } = null!;
+    public Teams Team { get; set; } = null!;
 }

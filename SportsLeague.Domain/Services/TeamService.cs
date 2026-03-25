@@ -16,13 +16,13 @@ public class TeamService : ITeamService
         _logger = logger;
     }
 
-    public async Task<IEnumerable<Team>> GetAllAsync()
+    public async Task<IEnumerable<Teams>> GetAllAsync()
     {
         _logger.LogInformation("Retrieving all teams");
         return await _teamRepository.GetAllAsync();
     }
 
-    public async Task<Team?> GetByIdAsync(int id)
+    public async Task<Teams?> GetByIdAsync(int id)
     {
         _logger.LogInformation("Retrieving team with ID: {TeamId}", id);
         var team = await _teamRepository.GetByIdAsync(id);
@@ -33,7 +33,7 @@ public class TeamService : ITeamService
         return team;
     }
 
-    public async Task<Team> CreateAsync(Team team)
+    public async Task<Teams> CreateAsync(Teams team)
     {
 
         // Validación de negocio: nombre único
@@ -49,7 +49,7 @@ public class TeamService : ITeamService
         return await _teamRepository.CreateAsync(team);
     }
 
-    public async Task UpdateAsync(int id, Team team)
+    public async Task UpdateAsync(int id, Teams team)
     {
         var existingTeam = await _teamRepository.GetByIdAsync(id);
 

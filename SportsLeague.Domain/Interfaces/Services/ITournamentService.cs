@@ -12,5 +12,5 @@ public interface ITournamentService
     Task DeleteAsync(int id);
     Task UpdateStatusAsync(int id, TournamentStatus newStatus); //Cambia el status de un torneo
     Task RegisterTeamAsync(int tournamentId, int teamId); //Registra equipo en torneo
-    Task<IEnumerable<Team>> GetTeamsByTournamentAsync(int tournamentId); //Obtener equipos por torneo
+    Task<IEnumerable<Teams>> GetTeamsByTournamentAsync(int tournamentId); //Obtener equipos por torneo
 }

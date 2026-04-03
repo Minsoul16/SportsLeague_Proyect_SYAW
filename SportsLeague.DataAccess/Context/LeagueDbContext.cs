@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Enums;
 
@@ -17,6 +18,7 @@ public class LeagueDbContext : DbContext
     public DbSet<Tournament> Tournaments => Set<Tournament>();
     public DbSet<TournamentTeam> TournamentTeams => Set<TournamentTeam>();
     public DbSet<Sponsor> Sponsors => Set<Sponsor>();
+    public DbSet<TournamentSponsor> TournamentSponsors => Set<TournamentSponsor>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -105,6 +107,12 @@ public class LeagueDbContext : DbContext
             //Only a Sponsor per Name
             entity.HasIndex(s => new { s.Name })
             .IsUnique();
+
+            //ContactEmail is valid (it has @ and .)
+            entity.ToTable(S => S.HasCheckConstraint(
+            "CK_Sponsor_ContactEmail",
+            "ContactEmail LIKE '%@%.%'"
+            ));
         });
 
         //---TournamentSponsor Configuration---
@@ -115,7 +123,7 @@ public class LeagueDbContext : DbContext
             entity.Property(ts => ts.JoinedAt).IsRequired();
 
             //ContractAmount > 0
-            entity.ToTable(T => T.HasCheckConstraint("CK_TournamentSponsor_ContractAmount", "[ContractAmount] > 0"));
+            entity.ToTable(TS => TS.HasCheckConstraint("CK_TournamentSponsor_ContractAmount", "[ContractAmount] > 0"));
 
             //Relation with Tournament
             entity.HasOne(ts => ts.Tournament)

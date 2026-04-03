@@ -7,8 +7,7 @@ public class TournamentSponsor : AuditBase
     public decimal ContractAmount { get; set; }
     public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
-    //Navigation Porperties
-
+    //Navigation Properties
     public Tournament Tournament { get; set; } = null!;
     public Sponsor Sponsor { get; set; } = null!;
 }

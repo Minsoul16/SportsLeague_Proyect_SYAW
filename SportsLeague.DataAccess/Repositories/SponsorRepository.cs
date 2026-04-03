@@ -22,5 +22,5 @@ public class SponsorRepository : GenericRepository<Sponsor>, ISponsorRepository
         return await _dbSet
         .Where(s => s.Category == category)
         .ToListAsync();
-    }
+    } 
 }

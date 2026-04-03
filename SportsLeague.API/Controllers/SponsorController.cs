@@ -60,6 +60,17 @@ public class SponsorController : ControllerBase
         return Ok(_mapper.Map<SponsorResponseDTO>(sponsor));
     }
 
+    [HttpGet("{id}/tournaments")]
+    public async Task<ActionResult<IEnumerable<TournamentResponseDTO>>> GetTournamentsBySponsor(int id)
+    {
+        try
+        {
+            var tournaments = await _sponsorService.GetTournamentsBySponsorAsync(id);
+            return Ok(_mapper.Map<IEnumerable<TournamentResponseDTO>>(tournaments));
+        }
+        catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
+    }
+
     [HttpPost]
     public async Task<ActionResult<SponsorResponseDTO>> Create(SponsorRequestDTO dto)
     {
@@ -95,6 +106,18 @@ public class SponsorController : ControllerBase
         try
         {
             await _sponsorService.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
+        catch (InvalidOperationException ex) { return Conflict(new { message = ex.Message }); }
+    }
+
+    [HttpDelete("tournaments/{tournamentId}/sponsors/{sponsorId}")]
+    public async Task<ActionResult> UnEnrollSponsorInTournament(int sponsorId, int tournamentId, TournamentSponsorRequestDTO dto)
+    {
+        try
+        {
+            await _sponsorService.UnEnrollSponsorInTournamentAsync(tournamentId, sponsorId);
             return NoContent();
         }
         catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }

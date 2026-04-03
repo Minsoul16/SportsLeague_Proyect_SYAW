@@ -8,9 +8,11 @@ public interface ISponsorService
     Task<IEnumerable<Sponsor>> GetAllAsync();
     Task<Sponsor?> GetByIdAsync(int id);
     Task<Sponsor?> GetByNameAsync(string name);
+    Task<IEnumerable<Tournament>> GetTournamentsBySponsorAsync(int sponsorId);
     Task<IEnumerable<Sponsor>> GetByCategoryAsync(SponsorCategory category);
     Task<Sponsor> CreateAsync(Sponsor sponsor);
     Task UpdateAsync(int id, Sponsor sponsor);
     Task RegisterSponsorInTournamentAsync(int tournamentId, int sponsorId, decimal contractAmount);
+    Task UnEnrollSponsorInTournamentAsync(int tournamentId, int sponsorId); 
     Task DeleteAsync(int id);
 }

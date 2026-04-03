@@ -17,10 +17,19 @@ public class SponsorRepository : GenericRepository<Sponsor>, ISponsorRepository
         .FirstOrDefaultAsync(s => s.Name.ToLower() == name.ToLower());
     }
 
+    public async Task<IEnumerable<Tournament>> GetTournamentsBySponsorAsync(int sponsorId)
+    {
+        return await _dbSet
+        .Where(s => s.Id == sponsorId)
+        .SelectMany(s => s.TournamentSponsors)
+        .Select(ts => ts.Tournament)
+        .ToListAsync();
+    }
+
     public async Task<IEnumerable<Sponsor>> GetByCategoryAsync(SponsorCategory category)
     {
         return await _dbSet
         .Where(s => s.Category == category)
         .ToListAsync();
-    } 
+    }
 }

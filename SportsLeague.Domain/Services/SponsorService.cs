@@ -56,6 +56,19 @@ public class SponsorService : ISponsorService
         return await _sponsorRepository.GetByCategoryAsync(category);
     }
 
+    public async Task<IEnumerable<Tournament>> GetTournamentsBySponsorAsync(int sponsorId)
+    {
+        var sponsor = await _sponsorRepository.GetByIdAsync(sponsorId);
+        if (sponsor == null)
+            throw new KeyNotFoundException(
+            $"There is no sponsor with ID {sponsorId}");
+
+        var tournamentSponsor = await _tournamentSponsorRepository
+        .GetBySponsorAsync(sponsorId);
+
+        return tournamentSponsor.Select(ts => ts.Tournament);
+    }
+
     public async Task<Sponsor> CreateAsync(Sponsor sponsor)
     {
         //Verification of Name being unique among sponsors
@@ -169,7 +182,7 @@ public class SponsorService : ISponsorService
         var sponsorExists = await _sponsorRepository.ExistsAsync(sponsorId);
         if (!sponsorExists)
             throw new KeyNotFoundException(
-            $"There is ni sponsors with ID {sponsorId}");
+            $"There is no sponsors with ID {sponsorId}");
 
         //Verify the sponsor is not already enrolled
         var existing = await _tournamentSponsorRepository
@@ -199,5 +212,41 @@ public class SponsorService : ISponsorService
         "Registering sponsor {SponsorId} in tournament {TournamentId}",
         sponsorId, tournamentId);
         await _tournamentSponsorRepository.CreateAsync(tournamentSponsor);
+    }
+
+    public async Task UnEnrollSponsorInTournamentAsync(int tournamentId, int sponsorId)
+    {
+        //Verify sponsor exists
+        var sponsorExists = await _sponsorRepository.ExistsAsync(sponsorId);
+        if (!sponsorExists)
+            throw new KeyNotFoundException(
+            $"There is no sponsors with ID {sponsorId}");
+
+        //Verify that tournament exists
+        var tournament = await _tournamentRepository.GetByIdAsync(tournamentId);
+        if (tournament == null)
+            throw new KeyNotFoundException(
+            $"There is no tournament with ID {tournamentId}");
+
+        //Only when the tournament status is Pending
+        if (tournament.Status != TournamentStatus.Pending)
+        {
+            throw new InvalidOperationException(
+            "Sponsors can only be unenrolled in tournaments with status Pending");
+        }
+
+        //Verify the sponsor is enrolled in the tournament
+        var existing = await _tournamentSponsorRepository
+        .GetByTournamentAndSponsorAsync(tournamentId, sponsorId);
+        if (existing == null)
+        {
+            throw new InvalidOperationException(
+            "There is no relation beetwen the given sponsor and tournament");
+        }
+
+        _logger.LogInformation(
+            "Unenrolling sponsor {SponsorId} of tournament {TournamentId}",
+            sponsorId, tournamentId);
+        await _tournamentSponsorRepository.DeleteAsync(existing.Id);
     }
 }

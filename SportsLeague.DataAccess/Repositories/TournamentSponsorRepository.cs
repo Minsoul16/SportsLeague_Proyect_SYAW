@@ -10,9 +10,12 @@ public class TournamentSponsorRepository : GenericRepository<TournamentSponsor>,
     {
     }
 
-    public Task<IEnumerable<TournamentSponsor>> GetBySponsorAsync(int sponsorId)
+    public async Task<IEnumerable<TournamentSponsor>> GetBySponsorAsync(int sponsorId)
     {
-        throw new NotImplementedException();
+        return await _dbSet
+        .Include(ts => ts.Tournament)
+        .Where(ts => ts.SponsorId == sponsorId)
+        .ToListAsync();
     }
 
     public async Task<TournamentSponsor?> GetByTournamentAndSponsorAsync(int tournamentId, int sponsorId)

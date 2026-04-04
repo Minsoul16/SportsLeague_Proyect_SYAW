@@ -51,13 +51,13 @@ public class SponsorController : ControllerBase
         return Ok(_mapper.Map<SponsorResponseDTO>(sponsor));
     }
 
-    [HttpGet("category/{category}")]
+    [HttpGet("category/{category}")]//Borrar
     public async Task<ActionResult<SponsorResponseDTO>> GetByCategory(SponsorCategory category)
     {
         var sponsor = await _sponsorService.GetByCategoryAsync(category);
         if (sponsor == null)
             return NotFound(new { message = $"Sponsor with Category {category} not found" });
-        return Ok(_mapper.Map<SponsorResponseDTO>(sponsor));
+        return Ok(_mapper.Map<IEnumerable<SponsorResponseDTO>>(sponsor));
     }
 
     [HttpGet("{id}/tournaments")]
@@ -113,7 +113,7 @@ public class SponsorController : ControllerBase
     }
 
     [HttpDelete("tournaments/{tournamentId}/sponsors/{sponsorId}")]
-    public async Task<ActionResult> UnEnrollSponsorInTournament(int sponsorId, int tournamentId, TournamentSponsorRequestDTO dto)
+    public async Task<ActionResult> UnEnrollSponsorInTournament(int sponsorId, int tournamentId)
     {
         try
         {
